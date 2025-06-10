@@ -1,0 +1,16 @@
+{
+  "app": {
+    "title": "ekyc-zalo-mini-app",
+    "textColor": {
+      "light": "black",
+      "dark": "white"
+    },
+    "statusBar": "normal",
+    "actionBarHidden": true,
+    "hideIOSSafeAreaBottom": true,
+    "hideAndroidBottomNavigationBar": false
+  },
+  "listCSS": [],
+  "listSyncJS": [],
+  "listAsyncJS": []
+}
