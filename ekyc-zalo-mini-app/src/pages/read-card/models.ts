@@ -42,7 +42,7 @@ export interface IDCardInformationResponse {
   status: number;
   code: string;
   message: string;
-  requestId: string;
+  request_id: string;
   faceString: string;
   data?: IDCardInformation;
   chipAuthStatus: PassportAuthenticationStatus;

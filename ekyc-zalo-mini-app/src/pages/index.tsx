@@ -1,5 +1,4 @@
-import { openMiniApp } from "zmp-sdk";
-import { Box, Button, Icon, Page, Text, useNavigate } from "zmp-ui";
+import { Box, Button, Icon, Page, useNavigate, useSearchParams } from "zmp-ui";
 
 import Clock from "@/components/clock";
 import Logo from "@/components/logo";
@@ -30,6 +29,19 @@ function HomePage() {
         }}
       >
         Read card
+      </Button>
+      <Button
+        variant="primary"
+        suffixIcon={<Icon icon="zi-more-grid" />}
+        onClick={() => {
+          // openMiniApp({
+          //   appId: "1070750904448149704", // ZaUI Components
+          // });
+          navigate('/iproov-liveness', { state: { clientTransactionId: '6ec18595-b539-48c1-b78d-850cd0564a05' }})
+          
+        }}
+      >
+        Iproov liveness
       </Button>
       <Logo className="fixed bottom-8" />
     </Page>

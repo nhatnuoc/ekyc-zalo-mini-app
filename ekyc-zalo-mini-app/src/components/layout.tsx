@@ -10,6 +10,7 @@ import { AppProps } from "zmp-ui/app";
 
 import HomePage from "@/pages/index";
 import ReadCardPage from "@/pages/read-card";
+import IproovPage from "@/pages/iproov";
 
 const Layout = () => {
   return (
@@ -19,6 +20,7 @@ const Layout = () => {
           <AnimationRoutes>
             <Route path="/" element={<HomePage />}></Route>
             <Route path="/read-card" element={<ReadCardPage />}></Route>
+            <Route path="/iproov-liveness" element={<IproovPage />}></Route>
           </AnimationRoutes>
         </ZMPRouter>
       </SnackbarProvider>
