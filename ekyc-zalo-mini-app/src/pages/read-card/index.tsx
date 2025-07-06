@@ -1,13 +1,94 @@
-import React, { useState } from "react";
-import { Page, Header } from "zmp-ui";
-import MRZScanner from "./mrz-scanner";
+import React, { useEffect, useState } from "react";
+import { scanNFC } from "zmp-sdk";
+import { Page, Header, Swiper, Button, useLocation, useNavigate } from "zmp-ui";
+import { initTransaction, readCard, registerDeviceToken } from '../read-card/api';
+import RoutePath from "@/constants/route-path";
+
+const IntroStepComponent = ({
+  title, image
+}: {
+  title: string;
+  image: string;
+}) => (
+  <div>
+    <div className="font-medium text-base text-wrap">
+      {title}
+    </div>
+    <img src={image}/>
+  </div>
+)
 
 const ReadCardPage: React.FunctionComponent = (props) => {
+  const { state: { mrz }} = useLocation()
+  const navigate = useNavigate()
+  const [isLoading, setLoading] = useState(false)
+  const [autoPlay, setAutoPlay] = useState(false)
+  const startScanNFC = () => {
+    setLoading(true)
+    console.log(mrz)
+    scanNFC({
+        type: 'cccd',
+        data: {
+            mrz: mrz
+        }
+    })
+    .then(value => {
+      console.log(value)
+      const {sod, dg1, dg2, dg13, dg14} = value
+      return registerDeviceToken()
+      .then(res => {
+        return initTransaction()
+      })
+      .then(res => {
+        return readCard(sod, dg1, dg2, dg13, dg14, res.data)
+      })
+      .then(res => {
+        console.log(res.data)
+        setLoading(false)
+        const nfcData = res
+        navigate(RoutePath.iproov, { state: nfcData })
+      })
+    })
+    .catch(error => {
+      setLoading(false)
+    })
+  }
+  useEffect(() => {
+    setTimeout(() => {
+      setAutoPlay(true)
+    }, 3000)
+  }, [])
   return (
-    <Page className="page">
-      <Header title="Đọc CCCD"/>
-      <div>
-          <MRZScanner />
+    <Page className="page bg-neutral-100 dark:bg-neutral-100">
+      <Header title="Quét căn cước công dân" style={{ fontSize: '1rem', fontWeight: '600' }}/>
+      <div className="flex flex-col mt-10">
+        <div>
+          <Swiper autoplay={autoPlay} loop dots={false} duration={3000}>
+            <Swiper.Slide>
+              <IntroStepComponent 
+                title="Bước 1: Đặt MẶT SAU của điện thoại tiếp xúc với chip của CCCD như hình hướng dẫn"
+                image={"https://cdn.jsdelivr.net/gh/nhatnuoc/orcb-traineddata@main/intro-readcard-1.svg"}
+              />
+            </Swiper.Slide>
+            <Swiper.Slide>
+              <IntroStepComponent 
+                title="Bước 2: Giữ CCCD cố định cho đến khi hoàn tất."
+                image={"https://cdn.jsdelivr.net/gh/nhatnuoc/orcb-traineddata@main/intro-readcard-2.svg"}
+              />
+            </Swiper.Slide>
+            <Swiper.Slide>
+              <IntroStepComponent 
+                title="Bước 2: Giữ CCCD cố định cho đến khi hoàn tất."
+                image={"https://cdn.jsdelivr.net/gh/nhatnuoc/orcb-traineddata@main/intro-readcard-3.svg"}
+              />
+            </Swiper.Slide>
+          </Swiper>
+        </div>
+        <Button onClick={() => {
+          startScanNFC()
+        }} className="bg-primary text-neutral-900" loading={isLoading}>
+          Bắt đầu
+        </Button>
       </div>
     </Page>
   );

@@ -18,15 +18,20 @@ export interface RegisterDeviceResponsable {
 
 export interface LivenessResult {
     status: number;
-    data: Record<string, any>;
+    data: LivenessResultData;
     signature: string;
-    livenesScore: number;
-    faceMatchingScore: number;
     success: boolean;
-    sim: number;
-    livenessType: string;
     message: string;
     code: string;
     request_id: string;
-    faceMatchingResult: number;
 } 
+
+interface LivenessResultData {
+    livenesScore: number;
+    livenessScore: number;
+    faceMatchingScore: number;
+    sim: number;
+    livenessType: string;
+    faceMatchingResult: number;
+    success: boolean;
+}

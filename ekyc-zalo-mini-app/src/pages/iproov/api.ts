@@ -6,7 +6,7 @@ const API_ENDPOINTS = {
     registerDevice: '/eid/v3/registerDevice',
     resetDeviceSecret: '/eid/v3/updateDeviceSecret',
     initTransaction: '/eid/v3/initTransaction',
-    verifyFace: '/eid/v3/verifyFace'
+    verifyFace: '/eid/v3/verifyFaceDynamicFlash'
 } as const;
 
 interface InitTransactionOptions {
@@ -135,7 +135,7 @@ export async function initTransactionApi(options: InitTransactionOptions = {}): 
   return response.data;
 }
 
-export async function verifyFaceApi(params: { transaction_id: string }): Promise<LivenessResult> {
+export async function verifyFaceDynamicFlashApi(params: { transaction_id: string }): Promise<LivenessResult> {
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
     'appid': appId,

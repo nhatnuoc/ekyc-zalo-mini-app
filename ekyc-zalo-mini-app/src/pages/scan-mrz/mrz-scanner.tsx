@@ -3,8 +3,8 @@ import { useEffect, useRef, useState } from 'react';
 import { scanNFC } from 'zmp-sdk';
 import { Box, Button, DatePicker, Grid, Input, List, useNavigate } from 'zmp-ui'
 import scribe from 'scribe.js-ocr';
-import { initTransaction, readCard, registerDeviceToken } from './api';
-import { IDCardInformationResponse } from './models';
+import { IDCardInformationResponse } from '../read-card/models';
+import RoutePath from '@/constants/route-path';
 
 interface FormData {
   idNumber?: string;
@@ -132,43 +132,14 @@ const MRZScanner = () => {
       fullName: fullName,
       gender: 'M'
     })
-    setMRZData(mrz.join('\n'))
-    setMRZError('')
-    startScanNFC(mrz.join(''))
     console.log(mrz.join('').length)
+    startScanNFC(mrz.join(''))
   };
 
   const startScanNFC = (mrz: string) => {
-    setNFCData(undefined)
-    setNFCError('')
-    scanNFC({
-        type: 'cccd',
-        data: {
-            mrz: mrz
-        }
-    })
-    .then(value => {
-      console.log(value)
-      const {sod, dg1, dg2, dg13, dg14} = value
-      setNFCData(undefined)
-      setNFCError('')
-      return registerDeviceToken()
-      .then(res => {
-        return initTransaction()
-      })
-      .then(res => {
-        return readCard(sod, dg1, dg2, dg13, dg14, res.data)
-      })
-      .then(res => {
-        console.log(res.data)
-        setNFCData(res)
-      })
-    })
-    .catch(error => {
-      setNFCData(undefined)
-      setNFCError(JSON.stringify(error))
-    })
+    navigate(RoutePath.readCard, { state: { mrz }})
   }
+  
   const startScanMRZ = async () => {
     try {
       setMRZData('')
@@ -248,7 +219,7 @@ const MRZScanner = () => {
     }
   };
   useEffect(() => {
-    startScanMRZ();
+    // startScanMRZ();
   }, []);
   const showScanMRZ = false
 
@@ -315,12 +286,13 @@ const MRZScanner = () => {
       }
       {
         !showScanMRZ && <form onSubmit={handleSubmit}>
-          <Box>
+          <div>
             <Input
               name='idNumber'
               label={'Số CCCD'}
               onChange={handleChange}
               value={formData.idNumber}
+              type='number'
             />
             <Input
               name='fullName'
@@ -333,74 +305,24 @@ const MRZScanner = () => {
               onChange={(val) =>
                 setFormData({ ...formData, dob: val })
               }
+              
               value={formData.dob}
             />
             {
               !mrzData && !nfcData && <Button
                 variant="primary"
                 htmlType='submit'
+                className='bg-primary text-neutral-900 mt-12'
+                fullWidth
               >
                 Quét NFC
               </Button>
             }
-          </Box>
+          </div>
         </form>
       }
       <p style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>{mrzData}</p>
       <p style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>{mrzError}</p>
-      {
-        nfcData && <div>
-          <Grid columnCount={2} columnSpace='1rem' rowSpace='1rem'>
-            <div>Số CCCD</div>
-            <div>{nfcData.data?.citizen_identify}</div>
-            <div>Tên</div>
-            <div>{nfcData.data?.full_name}</div>
-            <div>Ngày sinh</div>
-            <div>{nfcData.data?.date_of_birth}</div>
-            <div>Ngày hết hạn</div>
-            <div>{nfcData.data?.date_of_expiry}</div>
-            <div>Ngày cấp</div>
-            <div>{nfcData.data?.date_provide}</div>
-            <div>Giới tính</div>
-            <div>{nfcData.data?.gender}</div>
-            <div>Dân tộc</div>
-            <div>{nfcData.data?.ethnic}</div>
-            <div>Tôn giáo</div>
-            <div>{nfcData.data?.religion}</div>
-            <div>Quốc tịch</div>
-            <div>{nfcData.data?.nationality}</div>
-            <div>Tên cha</div>
-            <div>{nfcData.data?.father_name}</div>
-            <div>Tên mẹ</div>
-            <div>{nfcData.data?.mother_name}</div>
-            <div>Tên vợ/chồng</div>
-            <div>{nfcData.data?.partner_name}</div>
-            <div>Tên khác</div>
-            <div>{nfcData.data?.otherName}</div>
-            <div>Nơi sinh</div>
-            <div>{nfcData.data?.place_of_origin}</div>
-            <div>Nơi ở</div>
-            <div>{nfcData.data?.place_of_residence}</div>
-            <div>Số CMND cũ</div>
-            <div>{nfcData.data?.old_citizen_identify}</div>
-            <div>Đặc điểm nhận dạng</div>
-            <div>{nfcData.data?.personal_identification}</div>
-            <div>Ảnh</div>
-            <div>
-              <img 
-                src={`data:image/jpeg;base64,${nfcData.data?.face_image}`} 
-                alt="Ảnh chân dung" 
-                style={{ 
-                  maxWidth: '200px', 
-                  borderRadius: '8px',
-                  border: '2px solid #ddd',
-                  boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-                }} 
-              />
-            </div>
-          </Grid>
-        </div>
-      }
       <p style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>{nfcError}</p>
       {
         mrzData && <Button
@@ -412,27 +334,6 @@ const MRZScanner = () => {
           }}
         >
           Quét lại MRZ
-        </Button>
-      }
-      {
-        nfcData && <Button
-          variant="primary"
-          onClick={() => {
-            setNFCData(undefined)
-            startScanNFC(mrzData)
-          }}
-        >
-          Quét lại NFC
-        </Button>
-      }
-      {
-        nfcData && <Button
-          variant="primary"
-          onClick={() => {
-            navigate('/iproov-liveness', { state: { clientTransactionId: nfcData.request_id } })
-          }}
-        >
-          Start liveness
         </Button>
       }
     </div>
