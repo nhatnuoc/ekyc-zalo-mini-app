@@ -20,6 +20,8 @@
     "deploy": "zmp deploy"
   },
   "dependencies": {
+    "@ekyc-zma-sdk/liveness": "^0.1.8",
+    "@ekyc-zma-sdk/read-card": "^0.1.6",
     "@iproov/web-sdk": "^5.4.4",
     "axios": "^1.9.0",
     "jose": "^6.0.11",

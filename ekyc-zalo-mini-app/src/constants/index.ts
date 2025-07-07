@@ -1,7 +1,3 @@
-import { base32DecodeToData } from "./base32"
-import { createJWSRequestBody } from "./sign-manager"
-import { generate } from "./totp-generator"
-
 export const privateKey = `-----BEGIN PRIVATE KEY-----
 MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCiOMdedNfAhAdI
 M1YmUd2hheu2vDMmFHjCfWHon8wv0doubYPY6/uhMcUERpPiFddWqe+Dfr/XwCsa
@@ -64,56 +60,3 @@ Y/EdqKp20cAT9vgNap7Bfgv5XN9PrE+Yt0C1BkxXnfJHA7L9hcoYrknsae/Fa2IP
 export const appId = 'com.pvcb'
 export const ekycUrl = 'https://ekyc-sandbox.eidas.vn/ekyc'
 export const faceUrl = 'https://ekyc-sandbox.eidas.vn/face-matching'
-
-export const DeviceManager = {
-    encryptedDeviceId: '',
-    secret: '',
-    isReadersRegister: 'false',
-
-    isRegisteredDevice(): boolean {
-        return this.isReadersRegister === 'true';
-    },
-
-    getDeviceInformations(deviceId: string): Record<string, any> {
-        return {
-        deviceId: deviceId || this.encryptedDeviceId,
-        // Add other device information as needed
-        };
-    }
-};
-
-export function getEncryptedDeviceId(): string {
-    return DeviceManager.encryptedDeviceId;
-}
-
-function getSecretKey(): string {
-    return DeviceManager.secret;
-}
-
-export async function createJWSSignedRequestBody(params: Record<string, any>): Promise<string | null> {
-    try {
-      const jwsBody = await createJWSRequestBody(params, publicKey, privateKey);
-      if (!jwsBody) return null;
-      
-      // Convert Uint8Array to string
-      const jwsString = new TextDecoder().decode(jwsBody);
-      return jwsString;
-    } catch (error) {
-      console.error('Error creating JWS request body:', error);
-      return null;
-    }
-  }
-  
-  export async function generateTOTP(): Promise<number> {
-    const secretKey = getSecretKey();
-    const secret = base32DecodeToData(secretKey);
-    
-    if (!secret) {
-      return 0;
-    }
-  
-    const time = new Date();
-    const totp = await generate(6, secret, 0, time);
-    
-    return parseInt(totp) || 0;
-  }

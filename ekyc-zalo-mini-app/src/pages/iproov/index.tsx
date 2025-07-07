@@ -1,14 +1,15 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Page, useNavigate, Header, useLocation, Box, Button } from "zmp-ui";
 import "@iproov/web-sdk"
-import { initTransactionApi, verifyFaceDynamicFlashApi } from "./api";
-import { InitTransactionData } from "./models";
+import { initTransactionApi, verifyFaceDynamicFlashApi, InitTransactionData } from "@ekyc-zma-sdk/liveness";
 import RoutePath from "@/constants/route-path";
 import introLiveness from '@/assets/intro-liveness.svg'
 import introLiveness1 from '@/assets/intro-liveness-1.svg'
 import introLiveness2 from '@/assets/intro-liveness-2.svg'
 import introLiveness3 from '@/assets/intro-liveness-3.svg'
 import FailedView from "../result/failed-view";
+import { config as configLiveness } from "@ekyc-zma-sdk/liveness";
+import { appId, faceUrl, privateKey, publicKey } from "@/constants";
 
 const IproovPage: React.FunctionComponent = () => {
   const { state } = useLocation()
@@ -19,7 +20,13 @@ const IproovPage: React.FunctionComponent = () => {
   const [error, setError] = useState<string>()
   const { verifyToken: token, transactionId } = {...transactionData}
   const { request_id: clientTransactionId, data: idCardInfo } = state
-
+  useEffect(() => {
+    configLiveness({
+      appId,
+      baseUrl: faceUrl,
+      publicKey, privateKey
+    })
+  }, [])
   useEffect(() => {
     console.log('Checking Web Components status...');
     
