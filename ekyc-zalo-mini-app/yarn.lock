@@ -199,27 +199,27 @@
   resolved "https://registry.yarnpkg.com/@csstools/convert-colors/-/convert-colors-1.4.0.tgz#ad495dc41b12e75d588c6db8b9834f08fa131eb7"
   integrity sha512-5a6wqoJV/xEdbRNKVo6I4hO3VjyDq//8q2f9I6PBAvMesJHFauXDorcNCsr9RzvsZnaWi5NYCcfyqP1QeFHFbw==
 
-"@ekyc-zma-sdk/core@0.1.0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@ekyc-zma-sdk/core/-/core-0.1.0.tgz#7b7d0f7c56c68c2356c55c77ecbd8a6048b6e212"
-  integrity sha512-hNHVObSoETo/74MXs7O7zGEC7XaQnfN6NAqEZJVJj7T1Cx1Ek/opccRgUUFyjBPHat0Og3vqper/qvQN6RGEmQ==
+"@ekyc-zma-sdk/core@1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@ekyc-zma-sdk/core/-/core-1.0.0.tgz#30d530934c1561f6723fea664e1df0bed02ca7bf"
+  integrity sha512-87YUKwrR93mfTGCe2uLMmiQxJau+kj/9hSlv/2WxucdnvuWzn7qoVqeYuUo8kQi/L7ZKfnheg7NRwR/jM6aX3w==
   dependencies:
     jose "^6.0.11"
 
-"@ekyc-zma-sdk/liveness@^0.1.8":
-  version "0.1.8"
-  resolved "https://registry.yarnpkg.com/@ekyc-zma-sdk/liveness/-/liveness-0.1.8.tgz#dea4c10150739ea1bba38aaa6cf329686286424b"
-  integrity sha512-K+K30PUT3y4CH5p8s0gCYGtogA37VZ7SxxZPxK3IGvB5i/Ks4b6kdSTiimfIG8u6BCn54+/t+b9K250R3/9SgQ==
+"@ekyc-zma-sdk/liveness@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@ekyc-zma-sdk/liveness/-/liveness-1.0.0.tgz#4473de572815457fbbf94ff189d75f086077d285"
+  integrity sha512-C5407rc30IUzReXXZzV/V3Y+VmNjJsrgzIhupd7IEgmulYJvwQBxl/0FpaKnGI+YUCRVOBN31I855wr/y0DPsw==
   dependencies:
-    "@ekyc-zma-sdk/core" "0.1.0"
+    "@ekyc-zma-sdk/core" "1.0.0"
     axios "^1.10.0"
 
-"@ekyc-zma-sdk/read-card@^0.1.6":
-  version "0.1.6"
-  resolved "https://registry.yarnpkg.com/@ekyc-zma-sdk/read-card/-/read-card-0.1.6.tgz#b71e01dbfee1d351d76acc3c4bd33183159c8973"
-  integrity sha512-w87QP4SvrLIfSibEgs2H6pW6Z5OaXFnoV42SHEuYYFUSTIVtVqcM/Sd1VpNFWB4xoZzJ78cQsRp7ODwItzuCoA==
+"@ekyc-zma-sdk/read-card@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@ekyc-zma-sdk/read-card/-/read-card-1.0.0.tgz#a7386df4d868c05dc954c917eb5045240abba07a"
+  integrity sha512-PwCIYC3kBtic3KYofJbQgSFWQ7nyfDF5Y5LobIM/exMhb17dkdjmkxQwLrZRn9/VKZF++kPCjM3qU8a+yFQRuw==
   dependencies:
-    "@ekyc-zma-sdk/core" "0.1.0"
+    "@ekyc-zma-sdk/core" "1.0.0"
     axios "^1.10.0"
 
 "@esbuild/aix-ppc64@0.21.5":

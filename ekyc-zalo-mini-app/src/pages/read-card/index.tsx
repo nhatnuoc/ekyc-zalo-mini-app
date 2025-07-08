@@ -48,7 +48,7 @@ const ReadCardPage: React.FunctionComponent = (props) => {
         return initTransaction()
       })
       .then(res => {
-        return readCard(sod, dg1, dg2, dg13, dg14, res.data)
+        return readCard({ sod, dg1DataB64: dg1, dg2DataB64: dg2, dg13DataB64: dg13, dg14DataB64: dg14, transactionId: res.data })
       })
       .then(res => {
         console.log(res.data)
