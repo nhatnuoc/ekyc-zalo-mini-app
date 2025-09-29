@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { scanNFC } from "zmp-sdk";
+import { scanNFC, showToast } from "zmp-sdk";
 import { Page, Header, Swiper, Button, useLocation, useNavigate } from "zmp-ui";
 import { initTransaction, readCard, registerDeviceToken } from '@ekyc-zma-sdk/read-card';
 import RoutePath from "@/constants/route-path";
-import { config as configReadCard } from "@ekyc-zma-sdk/read-card";
-import { appId, ekycUrl, privateKey, publicKey } from "@/constants";
 
 const IntroStepComponent = ({
   title, image
@@ -27,7 +25,6 @@ const ReadCardPage: React.FunctionComponent = (props) => {
   const [autoPlay, setAutoPlay] = useState(false)
   const startScanNFC = () => {
     setLoading(true)
-    console.log(mrz)
     scanNFC({
         type: 'cccd',
         data: {
@@ -35,7 +32,6 @@ const ReadCardPage: React.FunctionComponent = (props) => {
         }
     })
     .then(value => {
-      console.log(value)
       const {sod, dg1, dg2, dg13, dg14} = value
       return registerDeviceToken({
         deviceId: "82gg22da-258c-4155-815c-0a1af073bf4b",
@@ -51,7 +47,6 @@ const ReadCardPage: React.FunctionComponent = (props) => {
         return readCard({ sod, dg1DataB64: dg1, dg2DataB64: dg2, dg13DataB64: dg13, dg14DataB64: dg14, transactionId: res.data })
       })
       .then(res => {
-        console.log(res.data)
         setLoading(false)
         const nfcData = res
         navigate(RoutePath.iproov, { state: nfcData })
@@ -59,15 +54,10 @@ const ReadCardPage: React.FunctionComponent = (props) => {
     })
     .catch(error => {
       setLoading(false)
+      showToast({ message: `Lỗi: ${error}` })
     })
   }
   useEffect(() => {
-    configReadCard({
-      appId,
-      baseUrl: ekycUrl,
-      publicKey,
-      privateKey
-    })
     setTimeout(() => {
       setAutoPlay(true)
     }, 3000)
