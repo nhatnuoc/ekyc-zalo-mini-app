@@ -31,7 +31,8 @@
     "scribe.js-ocr": "^0.8.0",
     "tesseract.js": "^6.0.1",
     "zmp-sdk": "latest",
-    "zmp-ui": "latest"
+    "zmp-ui": "latest",
+    "zustand": "^5.0.8"
   },
   "devDependencies": {
     "@types/node": "^22.15.30",

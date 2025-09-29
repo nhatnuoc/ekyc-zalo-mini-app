@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { scanNFC, showToast } from "zmp-sdk";
 import { Page, Header, Swiper, Button, useLocation, useNavigate } from "zmp-ui";
 import { initTransaction, readCard, registerDeviceToken } from '@ekyc-zma-sdk/read-card';
@@ -23,7 +23,7 @@ const ReadCardPage: React.FunctionComponent = (props) => {
   const navigate = useNavigate()
   const [isLoading, setLoading] = useState(false)
   const [autoPlay, setAutoPlay] = useState(false)
-  const startScanNFC = () => {
+  const startScanNFC = useCallback(() => {
     setLoading(true)
     scanNFC({
         type: 'cccd',
@@ -56,7 +56,7 @@ const ReadCardPage: React.FunctionComponent = (props) => {
       setLoading(false)
       showToast({ message: `Lỗi: ${error}` })
     })
-  }
+  }, [])
   useEffect(() => {
     setTimeout(() => {
       setAutoPlay(true)

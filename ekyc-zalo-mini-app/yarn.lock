@@ -2950,3 +2950,8 @@ zmp-vite-plugin@latest:
   version "1.1.6"
   resolved "https://registry.yarnpkg.com/zmp-vite-plugin/-/zmp-vite-plugin-1.1.6.tgz#8deeedb59c4ce778a029d4b2c8a2de0cb026a026"
   integrity sha512-t20oEFRGT8Bh5y7F4PxvAoLZCQc6ZeFal53EhjJTwU+mRxKC5JajdHmzgeQbGf/c9lYwjF8Z1CFddeAwmNFTkA==
+
+zustand@^5.0.8:
+  version "5.0.8"
+  resolved "https://registry.yarnpkg.com/zustand/-/zustand-5.0.8.tgz#b998a0c088c7027a20f2709141a91cb07ac57f8a"
+  integrity sha512-gyPKpIaxY9XcO2vSMrLbiER7QMAMGOQZVRdJ6Zi782jkbzZygq5GI9nG8g+sMgitRtndwaBSl7uiqC49o1SSiw==
