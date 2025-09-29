@@ -60,3 +60,4 @@ Y/EdqKp20cAT9vgNap7Bfgv5XN9PrE+Yt0C1BkxXnfJHA7L9hcoYrknsae/Fa2IP
 export const appId = 'com.pvcb'
 export const ekycUrl = 'https://ekyc-sandbox.eidas.vn/ekyc'
 export const faceUrl = 'https://ekyc-sandbox.eidas.vn/face-matching'
+export const agentCode = 'EVN001'

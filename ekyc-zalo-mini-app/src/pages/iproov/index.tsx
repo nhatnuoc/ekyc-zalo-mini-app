@@ -1,43 +1,38 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Page, useNavigate, Header, useLocation, Box, Button } from "zmp-ui";
-import "@iproov/web-sdk"
-import { initTransactionApi, verifyFaceDynamicFlashApi, InitTransactionData } from "@ekyc-zma-sdk/liveness";
+import "@iproov/web-sdk";
+import {
+  initTransactionApi,
+  verifyFaceDynamicFlashApi,
+  InitTransactionData,
+} from "@ekyc-zma-sdk/liveness";
 import RoutePath from "@/constants/route-path";
-import introLiveness from '@/assets/intro-liveness.svg'
-import introLiveness1 from '@/assets/intro-liveness-1.svg'
-import introLiveness2 from '@/assets/intro-liveness-2.svg'
-import introLiveness3 from '@/assets/intro-liveness-3.svg'
+import introLiveness from "@/assets/intro-liveness.svg";
+import introLiveness1 from "@/assets/intro-liveness-1.svg";
+import introLiveness2 from "@/assets/intro-liveness-2.svg";
+import introLiveness3 from "@/assets/intro-liveness-3.svg";
 import FailedView from "../result/failed-view";
-import { config as configLiveness } from "@ekyc-zma-sdk/liveness";
-import { appId, faceUrl, privateKey, publicKey } from "@/constants";
 
 const IproovPage: React.FunctionComponent = () => {
-  const { state } = useLocation()
-  const navigate = useNavigate()
-  const [transactionData, setTransactionData] = useState<InitTransactionData>()
-  const iproovContainerRef = useRef<HTMLDivElement>(null)
+  const { state } = useLocation();
+  const navigate = useNavigate();
+  const [transactionData, setTransactionData] = useState<InitTransactionData>();
+  const iproovContainerRef = useRef<HTMLDivElement>(null);
   const [ready, setReady] = useState(false);
-  const [error, setError] = useState<string>()
-  const { verifyToken: token, transactionId } = {...transactionData}
-  const { request_id: clientTransactionId, data: idCardInfo } = state
+  const [error, setError] = useState<string>();
+  const { verifyToken: token, transactionId } = { ...transactionData };
+  const { request_id: clientTransactionId, data: idCardInfo } = state;
   useEffect(() => {
-    configLiveness({
-      appId,
-      baseUrl: faceUrl,
-      publicKey, privateKey
-    })
-  }, [])
-  useEffect(() => {
-    console.log('Checking Web Components status...');
-    
+    console.log("Checking Web Components status...");
+
     // Kiểm tra xem Web Components đã sẵn sàng chưa
-    if (window.customElements.get('iproov-me')) {
-      console.log('iproov-me element is already defined');
+    if (window.customElements.get("iproov-me")) {
+      console.log("iproov-me element is already defined");
       setReady(true);
     }
 
     const handleReady = () => {
-      console.log('WebComponentsReady event fired');
+      console.log("WebComponentsReady event fired");
       setReady(true);
     };
 
@@ -48,30 +43,41 @@ const IproovPage: React.FunctionComponent = () => {
     };
   }, []);
   const initLiveness = useCallback(async () => {
-    console.log("client transaction id: ", clientTransactionId)
-    setError(undefined)
-    setTransactionData(undefined)
-    const res = await initTransactionApi({ withToken: true, clientTransactionId: clientTransactionId })
+    console.log("client transaction id: ", clientTransactionId);
+    setError(undefined);
+    setTransactionData(undefined);
+    const res = await initTransactionApi({
+      withToken: true,
+      clientTransactionId: clientTransactionId,
+    });
     if (typeof res.data === "object" && res.data !== null) {
-      const transactionData = res.data as { transactionId: string; verifyToken: string };
-      setTransactionData(transactionData)
+      const transactionData = res.data as {
+        transactionId: string;
+        verifyToken: string;
+      };
+      setTransactionData(transactionData);
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
-    initLiveness()
-    window.addEventListener('passed', (e) => {
-      console.log("passed")
-    })
-  }, [])
+    initLiveness();
+    window.addEventListener("passed", (e) => {
+      console.log("passed");
+    });
+  }, []);
 
   useEffect(() => {
-    console.log('Effect triggered - ready:', ready, 'container:', iproovContainerRef.current);
+    console.log(
+      "Effect triggered - ready:",
+      ready,
+      "container:",
+      iproovContainerRef.current
+    );
     if (!ready || !iproovContainerRef.current) return;
 
-    const iproovElement = iproovContainerRef.current.querySelector('iproov-me');
-    console.log('Found iproov element:', iproovElement);
-    
+    const iproovElement = iproovContainerRef.current.querySelector("iproov-me");
+    console.log("Found iproov element:", iproovElement);
+
     if (!iproovElement) return;
 
     const handlePassed = (event: any) => {
@@ -79,28 +85,32 @@ const IproovPage: React.FunctionComponent = () => {
       const verifyFace = async () => {
         if (transactionId) {
           const res = await verifyFaceDynamicFlashApi({
-            transaction_id: transactionId
-          })
-          console.log("liveness result: ", res)
-          const success = res.success && res.data.success
+            transaction_id: transactionId,
+          });
+          console.log("liveness result: ", res);
+          const success = res.success && res.data.success;
           if (success) {
-            navigate(RoutePath.identificationInfo, { state: {
-              idCardInfo 
-            } })
+            navigate(RoutePath.identificationInfo, {
+              state: {
+                idCardInfo,
+              },
+            });
           } else {
-            navigate(RoutePath.result, { state: {
-              success,
-              idCardInfo 
-            } })
+            navigate(RoutePath.result, {
+              state: {
+                success,
+                idCardInfo,
+              },
+            });
           }
         }
-      }
-      verifyFace()
+      };
+      verifyFace();
     };
 
     const handleError = (event: any) => {
       console.error("❌ Error:", event.detail?.feedback);
-      setError(`${event.detail?.feedback} - ${event.detail?.reason}`)
+      setError(`${event.detail?.feedback} - ${event.detail?.reason}`);
     };
 
     iproovElement.addEventListener("passed", handlePassed);
@@ -112,40 +122,37 @@ const IproovPage: React.FunctionComponent = () => {
       iproovElement.removeEventListener("error", handleError);
       iproovElement.removeEventListener("failed", handleError);
     };
-  }, [ready, token])
+  }, [ready, token]);
 
   return (
-    <Page className="page bg-neutral-100 dark:bg-neutral-100" >
-      <Header title="Quay video chân dung"/>
+    <Page className="page bg-neutral-100 dark:bg-neutral-100">
+      <Header title="Quay video chân dung" />
       <Box>
         {token && token.length > 0 && (
           <div className="mt-8" ref={iproovContainerRef}>
-            <iproov-me 
-              token={token} 
-              base_url="https://sg.rp.secure.iproov.me"
-            >
+            <iproov-me token={token} base_url="https://sg.rp.secure.iproov.me">
               <div slot="failed">
-                <FailedView 
-                  title="Đăng ký không thành công" 
-                  message={error} 
+                <FailedView
+                  title="Đăng ký không thành công"
+                  message={error}
                   onClose={() => navigate(RoutePath.home, { replace: true })}
                   onTryAgain={initLiveness}
                 />
               </div>
 
               <div slot="error">
-                <FailedView 
-                  title="Đăng ký không thành công" 
-                  message={error} 
+                <FailedView
+                  title="Đăng ký không thành công"
+                  message={error}
                   onClose={() => navigate(RoutePath.home, { replace: true })}
                   onTryAgain={initLiveness}
                 />
               </div>
 
               <div slot="canceled">
-                <FailedView 
-                  title="Đăng ký không thành công" 
-                  message={error} 
+                <FailedView
+                  title="Đăng ký không thành công"
+                  message={error}
                   onClose={() => navigate(RoutePath.home, { replace: true })}
                   onTryAgain={initLiveness}
                 />
@@ -157,24 +164,24 @@ const IproovPage: React.FunctionComponent = () => {
 
               <div slot="ready">
                 <div className="flex flex-col items-center">
-                  <img src={introLiveness}/>
+                  <img src={introLiveness} />
                   <div className="flex flex-col bg-white rounded-xl p-4 space-y-4 shadow-md">
                     <div className="flex flex-row w-full items-center space-x-2">
-                      <img src={introLiveness1}/>
+                      <img src={introLiveness1} />
                       <div className="text-sm text-neutral-900 text-wrap">
                         Hình ảnh đủ ánh sáng, không bị mờ và lóa
                       </div>
                     </div>
                     <div className="flex flex-row w-full items-center space-x-2">
-                      <img src={introLiveness2}/>
+                      <img src={introLiveness2} />
                       <div className="text-sm text-neutral-900 text-wrap">
-                        Không đeo kính và đội mũ 
+                        Không đeo kính và đội mũ
                       </div>
                     </div>
                     <div className="flex flex-row w-full items-center space-x-2">
-                      <img src={introLiveness3}/>
+                      <img src={introLiveness3} />
                       <div className="text-sm text-neutral-900 text-wrap">
-                        Không đeo khẩu trang hoặc che khuôn mặt 
+                        Không đeo khẩu trang hoặc che khuôn mặt
                       </div>
                     </div>
                   </div>
@@ -182,10 +189,14 @@ const IproovPage: React.FunctionComponent = () => {
               </div>
 
               <div slot="button" className="mt-20">
-                <button type="button" className="bg-primary text-neutral-900 rounded-lg p-3 w-full font-semibold text-sm">Bắt đầu quay video</button>
+                <Button
+                  variant="primary"
+                  className="rounded-lg p-3 w-full font-semibold text-sm"
+                >
+                  Bắt đầu quay video
+                </Button>
               </div>
             </iproov-me>
-            
           </div>
         )}
       </Box>

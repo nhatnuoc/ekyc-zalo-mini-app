@@ -85,12 +85,12 @@ const IdentificationInfoPage: React.FunctionComponent = (props) => {
           </div>
         </div>
       }
-      <Button fullWidth className="bg-primary my-4 text-neutral-900" onClick={() => {
+      <Button fullWidth className="my-4" onClick={() => {
         navigate(RoutePath.result, { state: {
           success: true,
           idCardInfo
         } })
-      }}>Tiếp tục</Button>
+      }} variant="primary">Tiếp tục</Button>
       </div>
     </Page>
   );

@@ -90,7 +90,7 @@ const ReadCardPage: React.FunctionComponent = (props) => {
         </div>
         <Button onClick={() => {
           startScanNFC()
-        }} className="bg-primary text-neutral-900" loading={isLoading}>
+        }} variant="primary" loading={isLoading}>
           Bắt đầu
         </Button>
       </div>

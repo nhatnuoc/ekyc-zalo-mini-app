@@ -20,8 +20,8 @@ const FailedView = ({
             <div className="text-sm text-neutral-900">
                 {message}
             </div>
-            <Button fullWidth className="bg-primary text-neutral-900 text-sm mt-20" onClick={onTryAgain}>Thử lại</Button>
-            <Button fullWidth className="bg-neutral-200 text-neutral-900 text-sm mt-2" onClick={onClose}>Đóng</Button>
+            <Button fullWidth className="text-sm mt-20" onClick={onTryAgain} variant="primary">Thử lại</Button>
+            <Button fullWidth className="text-sm mt-2" onClick={onClose} variant="secondary">Đóng</Button>
         </div>
     </div>
 )

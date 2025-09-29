@@ -15,8 +15,7 @@ import icNfc from "@/assets/NFC.svg";
 import statusError from "@/assets/status-error.svg";
 import RoutePath from "@/constants/route-path";
 import { useEffect, useState } from "react";
-import { config as configReadCard, readConfig } from "@ekyc-zma-sdk/read-card";
-import { appId, ekycUrl, privateKey, publicKey } from "@/constants";
+import { readConfig } from "@ekyc-zma-sdk/read-card";
 
 function HomePage() {
   const navigate = useNavigate();
@@ -24,13 +23,6 @@ function HomePage() {
   const [logo, setLogo] = useState<string>();
   const [agentName, setAgentName] = useState<string>();
   useEffect(() => {
-    configReadCard({
-      appId,
-      baseUrl: ekycUrl,
-      publicKey,
-      privateKey,
-      agentCode: "EVN001",
-    });
     setLoading(true);
     readConfig()
       .then((res) => {

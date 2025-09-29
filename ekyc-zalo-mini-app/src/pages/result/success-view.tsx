@@ -20,7 +20,7 @@ const SuccessView = ({
             <div className="text-sm text-neutral-900">
                 {message}
             </div>
-            <Button fullWidth className="bg-primary text-neutral-900 text-sm mt-20" onClick={onComplete}>Hoàn thành</Button>
+            <Button fullWidth className="text-sm mt-20" onClick={onComplete} variant="primary">Hoàn thành</Button>
         </div>
     </div>
 )

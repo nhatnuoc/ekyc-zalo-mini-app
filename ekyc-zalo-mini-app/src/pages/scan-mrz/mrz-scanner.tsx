@@ -68,7 +68,7 @@ const MRZScanner = () => {
           <Button
             variant="primary"
             htmlType='submit'
-            className='bg-primary text-neutral-900 mt-12'
+            className='mt-12'
             fullWidth
           >
             Quét NFC
