@@ -8,12 +8,12 @@ const IdentificationInfoPage: React.FunctionComponent = (props) => {
   const { state: { idCardInfo }} = useLocation()
   const navigate = useNavigate()
   return (
-    <Page className="page bg-neutral-100 dark:bg-neutral-100">
+    <Page className="page">
       <Header title="Thông tin định danh"/>
       {/* <div className="absolute flex items-center justify-center w-full h-full">
         <img src={logoCA} />
       </div> */}
-      <div className="mt-10 w-full h-full">
+      <div className="mt-10 w-full h-full p-4">
       {
         idCardInfo && <div className="rounded-2xl flex flex-col bg-[#ffffff] overflow-hidden shadow-md">
           <div className="bg-[#12702E]">

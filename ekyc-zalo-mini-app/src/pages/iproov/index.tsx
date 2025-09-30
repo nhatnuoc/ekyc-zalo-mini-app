@@ -23,16 +23,12 @@ const IproovPage: React.FunctionComponent = () => {
   const { verifyToken: token, transactionId } = { ...transactionData };
   const { request_id: clientTransactionId, data: idCardInfo } = state;
   useEffect(() => {
-    console.log("Checking Web Components status...");
-
     // Kiểm tra xem Web Components đã sẵn sàng chưa
     if (window.customElements.get("iproov-me")) {
-      console.log("iproov-me element is already defined");
       setReady(true);
     }
 
     const handleReady = () => {
-      console.log("WebComponentsReady event fired");
       setReady(true);
     };
 
@@ -43,7 +39,6 @@ const IproovPage: React.FunctionComponent = () => {
     };
   }, []);
   const initLiveness = useCallback(async () => {
-    console.log("client transaction id: ", clientTransactionId);
     setError(undefined);
     setTransactionData(undefined);
     const res = await initTransactionApi({
@@ -61,33 +56,21 @@ const IproovPage: React.FunctionComponent = () => {
 
   useEffect(() => {
     initLiveness();
-    window.addEventListener("passed", (e) => {
-      console.log("passed");
-    });
   }, []);
 
   useEffect(() => {
-    console.log(
-      "Effect triggered - ready:",
-      ready,
-      "container:",
-      iproovContainerRef.current
-    );
     if (!ready || !iproovContainerRef.current) return;
 
     const iproovElement = iproovContainerRef.current.querySelector("iproov-me");
-    console.log("Found iproov element:", iproovElement);
 
     if (!iproovElement) return;
 
     const handlePassed = (event: any) => {
-      console.log("✅ Liveness completed, call validate API here");
       const verifyFace = async () => {
         if (transactionId) {
           const res = await verifyFaceDynamicFlashApi({
             transaction_id: transactionId,
           });
-          console.log("liveness result: ", res);
           const success = res.success && res.data.success;
           if (success) {
             navigate(RoutePath.identificationInfo, {
@@ -109,7 +92,6 @@ const IproovPage: React.FunctionComponent = () => {
     };
 
     const handleError = (event: any) => {
-      console.error("❌ Error:", event.detail?.feedback);
       setError(`${event.detail?.feedback} - ${event.detail?.reason}`);
     };
 
@@ -125,11 +107,11 @@ const IproovPage: React.FunctionComponent = () => {
   }, [ready, token]);
 
   return (
-    <Page className="page bg-neutral-100 dark:bg-neutral-100">
+    <Page className="">
       <Header title="Quay video chân dung" />
       <Box>
         {token && token.length > 0 && (
-          <div className="mt-8" ref={iproovContainerRef}>
+          <div className="mt-8 p-4" ref={iproovContainerRef}>
             <iproov-me token={token} base_url="https://sg.rp.secure.iproov.me">
               <div slot="failed">
                 <FailedView

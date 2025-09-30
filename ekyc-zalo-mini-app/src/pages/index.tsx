@@ -19,11 +19,9 @@ function HomePage() {
   const { agentName, appLogo } = useAppStore();
   return (
     <Page
-      className="flex flex-col bg-cover bg-center bg-no-repeat"
-      // style={{
-      //   backgroundImage: `url(${bg})`,
-      // }}
+      className="flex flex-col"
       title="Định danh trực tuyến"
+      
     >
       <Header title="Định danh trực tuyến" showBackIcon={false} />
       <div className="flex flex-col h-full">
@@ -110,7 +108,7 @@ function HomePage() {
         </div>
         <Button
           variant="primary"
-          className="font-semibold text-sm m-4 flex-none"
+          className="font-semibold text-sm mx-4 flex-none"
           onClick={() => {
             navigate(RoutePath.scanMrz);
           }}

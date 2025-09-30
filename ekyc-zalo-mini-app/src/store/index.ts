@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { config as configReadCard, readConfig } from "@ekyc-zma-sdk/read-card";
 import { config as configLiveness } from "@ekyc-zma-sdk/liveness";
 import { appId, faceUrl, ekycUrl, privateKey, publicKey } from "@/constants";
+import { closeLoading } from "zmp-sdk";
 
 export const useAppStore = create<{
   agentName?: string;
@@ -40,6 +41,7 @@ export const useAppStore = create<{
       "--nhatnuoc-primary-foreground-color",
       primaryForegroundColor
     );
+    closeLoading()
     // .finally(() => setLoading(false));
   },
 }));

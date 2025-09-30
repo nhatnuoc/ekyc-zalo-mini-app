@@ -11,16 +11,13 @@ const EkycResultPage: React.FunctionComponent = ({
 }) => {
   const navigate = useNavigate()
   const { state } = useLocation()
-  const { success, idCardInfo } = state
+  const { success } = state
   const goHome = useCallback(() => {
     navigate(RoutePath.home, { replace: true })
   }, [])
-  const goIdCardInfo = useCallback(() => {
-    navigate(RoutePath.identificationInfo, { replace: true, state: { idCardInfo } })
-  }, [])
   return (
-    <Page className="page bg-neutral-100 dark:bg-neutral-100">
-      <div className="bg-white mt-20">
+    <Page className="">
+      <div className="bg-white mt-20 p-4">
           {
             success ? 
             <SuccessView onComplete={goHome}/> 

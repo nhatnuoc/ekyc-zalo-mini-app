@@ -10,7 +10,7 @@ const IntroStepComponent = ({
   title: string;
   image: string;
 }) => (
-  <div>
+  <div className="p-4">
     <div className="font-medium text-base text-wrap">
       {title}
     </div>
@@ -63,10 +63,10 @@ const ReadCardPage: React.FunctionComponent = (props) => {
     }, 3000)
   }, [])
   return (
-    <Page className="page bg-neutral-100 dark:bg-neutral-100">
+    <Page className="" title="Quét căn cước công dân">
       <Header title="Quét căn cước công dân" style={{ fontSize: '1rem', fontWeight: '600' }}/>
-      <div className="flex flex-col mt-10">
-        <div>
+      <div className="flex flex-col h-full pt-16">
+        <div className="overflow-y-auto flex-1">
           <Swiper autoplay={autoPlay} loop dots={false} duration={3000}>
             <Swiper.Slide>
               <IntroStepComponent 
@@ -90,7 +90,7 @@ const ReadCardPage: React.FunctionComponent = (props) => {
         </div>
         <Button onClick={() => {
           startScanNFC()
-        }} variant="primary" loading={isLoading}>
+        }} variant="primary" loading={isLoading} className="mb-4 mx-4">
           Bắt đầu
         </Button>
       </div>

@@ -1,14 +1,15 @@
 {
   "app": {
-    "title": "ekyc-zalo-mini-app",
+    "title": "Định danh trực tuyến",
     "textColor": {
       "light": "black",
       "dark": "white"
     },
-    "statusBar": "normal",
+    "statusBar": "transparent",
     "actionBarHidden": true,
     "hideIOSSafeAreaBottom": true,
-    "hideAndroidBottomNavigationBar": false
+    "hideAndroidBottomNavigationBar": true,
+    "selfControlLoading": true
   },
   "listCSS": [],
   "listSyncJS": [],
